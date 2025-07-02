@@ -4,7 +4,9 @@
  */
 package cadastro;
 
+import java.awt.event.WindowAdapter;
 import java.sql.SQLException;
+import java.util.List;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -163,6 +165,7 @@ public class AtualizarJF extends javax.swing.JFrame {
              String curso = txtCursoAt.getText().trim();
              String matricula= txtMatriculaAt.getText().trim();
              int sexo = cbSexoAt.getSelectedIndex();
+             String sexotxt = cbSexoAt.getSelectedItem().toString();
              System.out.println("passou");
              if(nome.isEmpty()||endereco.isEmpty()||cpf.isEmpty()||curso.isEmpty()||matricula.isEmpty()||sexo == 0){
                  JOptionPane.showMessageDialog(this, 
@@ -170,13 +173,10 @@ public class AtualizarJF extends javax.swing.JFrame {
                          "Campos nao preenchidos",
                          JOptionPane.WARNING_MESSAGE);
              }else{
-                 Aluno alunoatualizado = new Aluno(curso, matricula, id, nome, endereco, curso, cpf);
+                 Aluno alunoatualizado = new Aluno(curso, matricula, id, nome, endereco, sexotxt, cpf);
                  alundao.atualizarUsuario(alunoatualizado);
-                 JOptionPane.showMessageDialog(this, 
-                         "Aluno atualizado com sucesso",
-                         "Sucesso",
-                         JOptionPane.INFORMATION_MESSAGE);
-                }
+                 this.dispose();
+             }  
         }catch(SQLException e ){
                  JOptionPane.showMessageDialog(this, 
                          "Erro: "+e.getMessage(),

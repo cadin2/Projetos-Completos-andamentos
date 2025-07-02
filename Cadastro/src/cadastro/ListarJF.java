@@ -6,6 +6,8 @@ package cadastro;
 
 import java.sql.SQLException;
 import java.util.List;
+import javax.swing.DefaultListModel;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -48,6 +50,7 @@ public class ListarJF extends javax.swing.JFrame {
         txtNomeAluno = new javax.swing.JTextField();
         pqsBT = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -87,6 +90,13 @@ public class ListarJF extends javax.swing.JFrame {
 
         jLabel1.setText("Nome :");
 
+        jButton3.setText("Deletar");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -103,12 +113,15 @@ public class ListarJF extends javax.swing.JFrame {
                         .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(26, 26, 26)
+                                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(txtNomeAluno, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(pqsBT)))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap(343, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addGap(0, 0, Short.MAX_VALUE))))
@@ -125,7 +138,9 @@ public class ListarJF extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jButton2)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton2)
+                    .addComponent(jButton3))
                 .addGap(67, 67, 67)
                 .addComponent(jButton1)
                 .addGap(21, 21, 21))
@@ -140,11 +155,11 @@ public class ListarJF extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         JTable tabelabs = this.modeloTabela;
-        AtualizarJF atualizarjf = new AtualizarJF(tabelabs);
-        atualizarjf.setVisible(true);
         int ls = modeloTabela.getSelectedRow();
         
         if(ls != -1){
+        AtualizarJF atualizarjf = new AtualizarJF(tabelabs);
+        atualizarjf.setVisible(true);
         String nome = modeloTabela.getValueAt(ls, 1).toString();
         atualizarjf.getTxtNomeAt().setText(nome);
                 
@@ -163,6 +178,7 @@ public class ListarJF extends javax.swing.JFrame {
         String sexocb =  modeloTabela.getValueAt(ls, 3).toString();
         atualizarjf.getCbSexoAt().setSelectedItem(sexocb);
         
+//        this.dispose();
         }else{
             JOptionPane.showMessageDialog(this,
                     "Selecione a linha primeiro",
@@ -206,6 +222,27 @@ public class ListarJF extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_pqsBTActionPerformed
 
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        int comfirm = JOptionPane.showConfirmDialog(this,
+                "voce deseja mesmo deletar esse usuario?",
+                "deletar usuario",
+                JOptionPane.YES_NO_OPTION);
+        int linha = modeloTabela.getSelectedRow();
+                
+        int is = (int) modeloTabela.getValueAt(linha, 0);
+        
+        if(comfirm == JOptionPane.YES_OPTION){
+            AlunoDAO alundao = new AlunoDAO();
+            try {
+                alundao.deletarAluno(is);
+            } catch (SQLException ex) {
+                System.getLogger(ListarJF.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            }
+        }
+        
+        
+    }//GEN-LAST:event_jButton3ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -245,6 +282,7 @@ public class ListarJF extends javax.swing.JFrame {
     private javax.swing.Box.Filler filler1;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable modeloTabela;
